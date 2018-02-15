@@ -6,7 +6,11 @@ import com.rcorp.airpokecross.AirPokeCrossGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new AirPokeCrossGame(), config);
+		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+		cfg.title = "PokeCross";
+		cfg.height = 1080;
+		cfg.width = 1920;
+		cfg.resizable = false;
+		new LwjglApplication(new AirPokeCrossGame(), cfg);
 	}
 }
