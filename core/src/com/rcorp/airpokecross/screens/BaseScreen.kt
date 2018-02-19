@@ -14,7 +14,7 @@ import sfs2x.client.core.IEventListener
 
 abstract class BaseScreen(val game: AirPokeCrossGame) : Screen, IEventListener {
     val camera: OrthographicCamera = OrthographicCamera(ConfigGame.VIEWPORT_WIDTH, ConfigGame.VIEWPORT_HEIGHT)
-    val sceneManger = SceneManager(Stage())
+    val sceneManager = SceneManager(Stage())
     val eventList: MutableList<String> = mutableListOf()
 
     init {
@@ -36,10 +36,10 @@ abstract class BaseScreen(val game: AirPokeCrossGame) : Screen, IEventListener {
         game.batch.projectionMatrix = camera.combined
 
         game.batch.begin()
-        sceneManger.draw(game.batch)
+        sceneManager.draw(game.batch)
         game.batch.end()
 
-        sceneManger.drawGui()
+        sceneManager.drawGui()
     }
 
     override fun dispatch(event: BaseEvent?) {
@@ -58,7 +58,7 @@ abstract class BaseScreen(val game: AirPokeCrossGame) : Screen, IEventListener {
     }
 
     override fun resize(width: Int, height: Int) {
-        ScreenUtils.resize(camera, sceneManger.stage, width, height)
+        ScreenUtils.resize(camera, sceneManager.stage, width, height)
     }
 
     fun addEventHandler(eventType: String) {

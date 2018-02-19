@@ -22,9 +22,9 @@ class SceneManager(val stage : Stage) {
     }
 
     fun draw(batch: Batch) {
-        for (entity in entities) {
-            batch.draw(entity.currentTexture, entity.position.x, entity.position.y, entity.size.x, entity.size.y)
-        }
+        entities
+                .filter { it.currentTexture != null }
+                .forEach { batch.draw(it.currentTexture, it.position.x, it.position.y, it.size.x, it.size.y) }
     }
 
     fun drawGui() {

@@ -7,6 +7,7 @@ import com.rcorp.airpokecross.config.ConfigSpriteKey
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.rcorp.airpokecross.config.ConfigGame
+import com.rcorp.airpokecross.config.ConfigMusicKey
 import com.rcorp.airpokecross.config.ConfigSFSPacketKey
 import com.rcorp.airpokecross.entities.Background
 import sfs2x.client.core.BaseEvent
@@ -23,6 +24,7 @@ class LoginScreen(game: AirPokeCrossGame) : BaseScreen(game) {
     private val labelInfo = Label("", game.skin)
 
     init {
+        game.musicManager.playMusic(ConfigMusicKey.LOGIN_SCREEN_MUSIC)
         val stack = Table()
 
         button.width = 200f
@@ -30,6 +32,11 @@ class LoginScreen(game: AirPokeCrossGame) : BaseScreen(game) {
 
         pwdEditText.width = 150f
         pwdEditText.height = 40f
+        pwdEditText.setTextFieldListener { _, key ->
+            if ((key == '\r' || key == '\n')){
+                startConnection()
+            }
+        }
 
         loginEditText.width = 150f
         loginEditText.height = 40f
@@ -59,19 +66,23 @@ class LoginScreen(game: AirPokeCrossGame) : BaseScreen(game) {
 
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent, x: Float, y: Float) {
-                if (!game.client.isConnected) {
-                    System.out.println("[INFO] connecting .....")
-                    game.client.connect(ConfigGame.SERVER_IP, ConfigGame.SERVER_PORT)
-                }
+                startConnection()
             }
         })
-        this.sceneManger.addGui(window)
-        sceneManger.addEntity(Background(game.spriteManager.getSprite(ConfigSpriteKey.LOGIN_SCREEN_BACKGROUND)))
+        this.sceneManager.addGui(window)
+        sceneManager.addEntity(Background(game.spriteManager.getSprite(ConfigSpriteKey.LOGIN_SCREEN_BACKGROUND)))
 
         addEventHandler(SFSEvent.LOGIN)
         addEventHandler(SFSEvent.CONNECTION)
         addEventHandler(SFSEvent.LOGIN_ERROR)
         addEventHandler(SFSEvent.ROOM_JOIN)
+    }
+
+    fun startConnection() {
+        if (!game.client.isConnected) {
+            System.out.println("[INFO] connecting .....")
+            game.client.connect(ConfigGame.SERVER_IP, ConfigGame.SERVER_PORT)
+        }
     }
 
     override fun dispatchEvent(event: BaseEvent) {
@@ -86,6 +97,7 @@ class LoginScreen(game: AirPokeCrossGame) : BaseScreen(game) {
             }
             SFSEvent.ROOM_JOIN -> {
                 System.out.println("[INFO] Success to join room " + (event.arguments[ConfigSFSPacketKey.SFS_ROOM_JOIN_ROOM] as Room).name)
+                game.switchScreen(SelectCharacterScreen(game))
             }
             SFSEvent.CONNECTION -> {
                 System.out.println("[INFO] Connection success")

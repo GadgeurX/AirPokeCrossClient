@@ -10,7 +10,9 @@ class SpriteManager {
     private val unknownSprite = Texture(Gdx.files.internal("assets/sprites/unknown.png"))
 
     init {
-        sprites[ConfigSpriteKey.LOGIN_SCREEN_BACKGROUND] = Texture(Gdx.files.internal("assets/sprites/login_screen.jpg"))
+        sprites[ConfigSpriteKey.LOGIN_SCREEN_BACKGROUND] = loadSprite("assets/sprites/login_screen_background.jpg")
+        sprites[ConfigSpriteKey.SELECT_CHARACTER_BACKGROUND] = loadSprite("assets/sprites/select_character_background.png")
+        sprites[ConfigSpriteKey.CREATE_CHARACTER_FRAME] = loadSprite("assets/sprites/character_frame.png")
     }
 
     fun getSprite(index: String) : Texture {
@@ -18,6 +20,15 @@ class SpriteManager {
             sprites[index]!!
         else
             unknownSprite
+    }
+
+    private fun loadSprite(path: String): Texture {
+        return try {
+            Texture(Gdx.files.internal(path))
+        } catch (e: Exception) {
+            System.out.println("[ERROR] Cannot load sprite " + path)
+            unknownSprite
+        }
     }
 
 }

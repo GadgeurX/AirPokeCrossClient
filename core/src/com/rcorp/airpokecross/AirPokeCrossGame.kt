@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.rcorp.airpokecross.config.ConfigGame
+import com.rcorp.airpokecross.managers.CharacterPortraitManager
 import com.rcorp.airpokecross.managers.LocaleManager
+import com.rcorp.airpokecross.managers.MusicManager
 import com.rcorp.airpokecross.managers.SpriteManager
 import com.rcorp.airpokecross.screens.LoginScreen
 import com.smartfoxserver.v2.exceptions.SFSException
@@ -19,8 +21,10 @@ import sfs2x.client.core.SFSEvent
 class AirPokeCrossGame : Game(), IEventListener {
     lateinit var batch: SpriteBatch
     lateinit var font: BitmapFont
+    lateinit var characterPortraitManager: CharacterPortraitManager
     lateinit var spriteManager: SpriteManager
     lateinit var localeManager: LocaleManager
+    lateinit var musicManager: MusicManager
     lateinit var skin: Skin
     val client = SmartFox(ConfigGame.SFS_DEBUG)
 
@@ -36,6 +40,8 @@ class AirPokeCrossGame : Game(), IEventListener {
         skin = Skin(Gdx.files.internal(ConfigGame.UI_SKIN_FILE))
         spriteManager = SpriteManager()
         localeManager = LocaleManager()
+        musicManager = MusicManager()
+        characterPortraitManager = CharacterPortraitManager()
         this.screen = LoginScreen(this)
     }
 

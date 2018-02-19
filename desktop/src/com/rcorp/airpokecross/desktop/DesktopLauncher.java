@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		cfg.title = "PokeCross";
 		cfg.height = 1080;
 		cfg.width = 1920;
+		cfg.fullscreen = false;
 		cfg.resizable = false;
 		new LwjglApplication(new AirPokeCrossGame(), cfg);
 	}
