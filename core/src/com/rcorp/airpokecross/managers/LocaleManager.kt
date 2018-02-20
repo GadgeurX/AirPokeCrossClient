@@ -15,7 +15,7 @@ class LocaleManager {
 
     fun getString(index : String, vararg param: Any) : String {
         return try {
-            bundle.format(index, param)
+            bundle.format(index, *param)
         } catch (e:Exception) {
             index
         }

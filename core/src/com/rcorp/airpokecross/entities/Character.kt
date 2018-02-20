@@ -1,6 +1,33 @@
 package com.rcorp.airpokecross.entities
 
-class Character : Entity() {
+import com.rcorp.airpokecross.config.ConfigSFSPacketKey
+import com.smartfoxserver.v2.entities.data.ISFSObject
+
+class Character(species: Int) : Entity() {
+
+    var id: Int = 0
+    var idUser : Int = 0
+    var species: Species = Species.values()[species]
+    var move1: Int = 165
+    var move2: Int = 165
+    var move3: Int = 165
+    var move4: Int = 165
+    var level: Int = 0
+    var exp: Int = 0
+    var nickname: String? = null
+
+    constructor(obj: ISFSObject): this(0) {
+        id = obj.getInt(ConfigSFSPacketKey.CHARACTER_ID)
+        idUser = obj.getInt(ConfigSFSPacketKey.CHARACTER_ID)
+        species = Species.values()[obj.getInt(ConfigSFSPacketKey.CHARACTER_SPECIES)]
+        move1 = obj.getInt(ConfigSFSPacketKey.CHARACTER_MOVE_1)
+        move2 = obj.getInt(ConfigSFSPacketKey.CHARACTER_MOVE_2)
+        move3 = obj.getInt(ConfigSFSPacketKey.CHARACTER_MOVE_3)
+        move4 = obj.getInt(ConfigSFSPacketKey.CHARACTER_MOVE_4)
+        level = obj.getInt(ConfigSFSPacketKey.CHARACTER_LEVEL)
+        exp = obj.getInt(ConfigSFSPacketKey.CHARACTER_EXP)
+        nickname = obj.getUtfString(ConfigSFSPacketKey.CHARACTER_NICKNAME)
+    }
 
     enum class Species {
         BULBASAUR, IVYSAUR, VENUSAUR, CHARMANDER, CHARMELEON, CHARIZARD, SQUIRTLE,

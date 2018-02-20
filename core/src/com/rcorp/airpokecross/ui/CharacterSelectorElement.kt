@@ -14,7 +14,8 @@ class CharacterSelectorElement(skin: Skin, private val game: AirPokeCrossGame) :
     private val stackImage : Stack = Stack()
     private val characterImage : Image = Image()
     private val characterBack : Image = Image()
-    private val characterName : Label = Label("ERROR", skin)
+    private val characterName : Label = Label("", skin)
+    private val characterLvl : Label = Label("", skin)
     private val backImage : Image = Image()
 
     init {
@@ -27,14 +28,19 @@ class CharacterSelectorElement(skin: Skin, private val game: AirPokeCrossGame) :
         table.add(stackImage)
         table.row()
         table.add(characterName)
+        table.row()
+        table.add(characterLvl)
         add(table)
     }
 
-    fun setCharacter(id : Int) {
-        characterImage.drawable = TextureRegionDrawable(TextureRegion(game.characterPortraitManager.getSprite(id)))
-        characterImage.setOrigin(game.characterPortraitManager.getSprite(id).width / 2f, 0f)
+    fun setCharacter(character : Character) {
+        characterImage.drawable = TextureRegionDrawable(TextureRegion(game.characterPortraitManager.getSprite(character.species.ordinal)))
+        characterImage.setOrigin(game.characterPortraitManager.getSprite(character.species.ordinal).width / 2f, 0f)
 
-        characterName.setText(game.localeManager.getString(Character.Species.values()[id].toString()))
+        characterName.setText(if (character.nickname == null){game.localeManager.getString(Character.Species.values()[character.species.ordinal].toString())} else {character.nickname!!})
+
+        if (character.level > 0)
+            characterLvl.setText(game.localeManager.getString("CHARACTER_DISPLAY_LVL_SELECTOR", character.level))
 
         backImage.drawable = TextureRegionDrawable(TextureRegion(game.spriteManager.getSprite(ConfigSpriteKey.CREATE_CHARACTER_FRAME)))
         backImage.setScale(1.5f)

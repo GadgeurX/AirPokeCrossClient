@@ -24,7 +24,6 @@ class CreateCharacterScreen(game: AirPokeCrossGame) : BaseScreen(game) {
     private val buttonCreateCharacter = TextButton(game.localeManager.getString("CREATE_CHARACTER_SCREEN_BUTTON_CREATE_CHARACTER"), game.skin)
     private val buttonCancel = TextButton(game.localeManager.getString("CREATE_CHARACTER_SCREEN_BUTTON_CANCEL"), game.skin)
     private val window = Window(game.localeManager.getString("CREATE_CHARACTER_SCREEN_BUTTON_CREATE_CHARACTER"), game.skin)
-    private val table = Table()
     private val charactersSelectors : CharacterSelector = CharacterSelector(game)
 
     init {
@@ -86,7 +85,7 @@ class CreateCharacterScreen(game: AirPokeCrossGame) : BaseScreen(game) {
                 val params: ISFSObject = event.arguments[ConfigSFSPacketKey.SFS_EXTENSION_PARAMS] as ISFSObject
                 when(cmd) {
                     ConfigServerRequest.USER_STARTERS_LIST_REQUEST -> {
-                        System.out.println("[INFO] Receive starters")
+                        System.out.println("[INFO] Receive characters")
                         charactersSelectors.setCharacters(params.getSFSArray(ConfigSFSPacketKey.STARTERS).getInt(0),
                                 params.getSFSArray(ConfigSFSPacketKey.STARTERS).getInt(1),
                                 params.getSFSArray(ConfigSFSPacketKey.STARTERS).getInt(2),
