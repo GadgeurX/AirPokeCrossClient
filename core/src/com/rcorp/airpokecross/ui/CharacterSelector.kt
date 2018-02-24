@@ -14,6 +14,10 @@ class CharacterSelector(val game: AirPokeCrossGame) : Table() {
     init {
     }
 
+    fun getCharacterSelected() : Character? {
+        return charactersSelectors[indexSelected].getCharacter()
+    }
+
     fun setCharacters(vararg indexs: Int) {
         for (index in indexs) {
             val character = CharacterSelectorElement(game.skin, game)

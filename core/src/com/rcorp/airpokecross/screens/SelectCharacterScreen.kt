@@ -22,6 +22,7 @@ class SelectCharacterScreen(game: AirPokeCrossGame) : BaseScreen(game) {
     private val window = Window(game.localeManager.getString("SELECT_CHARACTER_SCREEN_BUTTON_SELECT_CHARACTER"), game.skin)
     private val charactersSelectors : CharacterSelector = CharacterSelector(game)
     private val buttonCreateCharacter = TextButton(game.localeManager.getString("SELECT_CHARACTER_SCREEN_BUTTON_CREATE_CHARACTER"), game.skin)
+    private val buttonSelectCharacter = TextButton(game.localeManager.getString("SELECT_CHARACTER_SCREEN_BUTTON_SELECT_CHARACTER"), game.skin)
 
     init {
         buttonQuit.y = 10f
@@ -41,6 +42,20 @@ class SelectCharacterScreen(game: AirPokeCrossGame) : BaseScreen(game) {
             }
         })
 
+        buttonSelectCharacter.y = 10f
+        buttonSelectCharacter.x = ConfigGame.VIEWPORT_WIDTH / 2 - buttonSelectCharacter.width / 2
+        buttonSelectCharacter.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent, x: Float, y: Float) {
+                if (charactersSelectors.indexSelected == -1)
+                    return
+                Gdx.app.postRunnable {
+                    val payload = SFSObject()
+                    payload.putInt(ConfigSFSPacketKey.CHARACTER_ID, charactersSelectors.getCharacterSelected()!!.id)
+                    game.client.send(ExtensionRequest(ConfigClientRequest.USER_SELECT_CHARACTER_REQUEST, payload, game.client.lastJoinedRoom))
+                }
+            }
+        })
+
         this.sceneManager.addGui(buttonCreateCharacter)
         this.sceneManager.addEntity(Background(game.spriteManager.getSprite(ConfigSpriteKey.SELECT_CHARACTER_BACKGROUND)))
 
@@ -55,9 +70,11 @@ class SelectCharacterScreen(game: AirPokeCrossGame) : BaseScreen(game) {
         sceneManager.addGui(window)
         sceneManager.addGui(buttonCreateCharacter)
         sceneManager.addGui(buttonQuit)
+        sceneManager.addGui(buttonSelectCharacter)
         sceneManager.addEntity(Background(game.spriteManager.getSprite(ConfigSpriteKey.SELECT_CHARACTER_BACKGROUND)))
 
         this.addEventHandler(SFSEvent.EXTENSION_RESPONSE)
+        this.addEventHandler(SFSEvent.ROOM_JOIN)
 
         game.client.send(ExtensionRequest(ConfigClientRequest.USER_CHARACTERS_LIST_REQUEST, SFSObject(), game.client.lastJoinedRoom))
     }
@@ -79,6 +96,9 @@ class SelectCharacterScreen(game: AirPokeCrossGame) : BaseScreen(game) {
                         }
                     }
                 }
+            }
+            SFSEvent.ROOM_JOIN -> {
+                game.switchScreen(GameScreen(game))
             }
         }
     }

@@ -17,6 +17,7 @@ class CharacterSelectorElement(skin: Skin, private val game: AirPokeCrossGame) :
     private val characterName : Label = Label("", skin)
     private val characterLvl : Label = Label("", skin)
     private val backImage : Image = Image()
+    private var character : Character? = null
 
     init {
         characterImage.setScale(1.5f)
@@ -30,21 +31,29 @@ class CharacterSelectorElement(skin: Skin, private val game: AirPokeCrossGame) :
         table.add(characterName)
         table.row()
         table.add(characterLvl)
+        table.row()
         add(table)
     }
 
+    fun getCharacter() : Character? {
+        return character
+    }
+
     fun setCharacter(character : Character) {
+        this.character = character
         characterImage.drawable = TextureRegionDrawable(TextureRegion(game.characterPortraitManager.getSprite(character.species.ordinal)))
         characterImage.setOrigin(game.characterPortraitManager.getSprite(character.species.ordinal).width / 2f, 0f)
 
         characterName.setText(if (character.nickname == null){game.localeManager.getString(Character.Species.values()[character.species.ordinal].toString())} else {character.nickname!!})
-
+        characterName.setFontScale(1.3f)
+        characterLvl.setFontScale(1.1f)
         if (character.level > 0)
             characterLvl.setText(game.localeManager.getString("CHARACTER_DISPLAY_LVL_SELECTOR", character.level))
 
         backImage.drawable = TextureRegionDrawable(TextureRegion(game.spriteManager.getSprite(ConfigSpriteKey.CREATE_CHARACTER_FRAME)))
-        backImage.setScale(1.5f)
-        backImage.setOrigin(game.spriteManager.getSprite(ConfigSpriteKey.CREATE_CHARACTER_FRAME).width / 2f, 0f)
+        backImage.scaleX = 1.5f
+        backImage.scaleY = 1.7f
+        backImage.setOrigin(game.spriteManager.getSprite(ConfigSpriteKey.CREATE_CHARACTER_FRAME).width / 2f, 25f)
         this.color = Color.valueOf("#FFFFFF85")
     }
 
@@ -54,7 +63,7 @@ class CharacterSelectorElement(skin: Skin, private val game: AirPokeCrossGame) :
             backImage.color = Color.valueOf("#FFFFFFFF")
         } else {
             this.color = Color.valueOf("#FFFFFFFF")
-            backImage.color = Color.valueOf("#FFFFFFBB")
+            backImage.color = Color.valueOf("#CCCCCCCC")
         }
     }
 
