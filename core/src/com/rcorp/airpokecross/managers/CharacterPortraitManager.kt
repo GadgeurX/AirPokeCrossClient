@@ -10,8 +10,8 @@ class CharacterPortraitManager {
 
 
     init {
-        for (i in 0..151) {
-            sprites.add(i,loadSprite("assets/sprites/characters_portrait/" + (i +1) + ".png"))
+        for (i in 0 until 151) {
+            sprites.add(i,loadSprite("assets/sprites/characters_portrait/" + (i + 1) + ".png"))
         }
     }
 

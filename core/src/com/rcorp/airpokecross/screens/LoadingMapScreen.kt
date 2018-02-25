@@ -11,9 +11,12 @@ import sfs2x.client.core.BaseEvent
 import sfs2x.client.core.SFSEvent
 import sfs2x.client.requests.ExtensionRequest
 
-class GameScreen(game: AirPokeCrossGame): BaseScreen(game) {
+class LoadingMapScreen(game: AirPokeCrossGame): BaseScreen(game) {
 
     init {
+        addEventHandler(SFSEvent.EXTENSION_RESPONSE)
+
+        game.client.send(ExtensionRequest(ConfigClientRequest.GAME_MAP_CHECKSUM, SFSObject(), game.client.lastJoinedRoom))
     }
 
     override fun dispatchEvent(event: BaseEvent) {
@@ -24,9 +27,15 @@ class GameScreen(game: AirPokeCrossGame): BaseScreen(game) {
                 val params: ISFSObject = event.arguments[ConfigSFSPacketKey.SFS_EXTENSION_PARAMS] as ISFSObject
                 when(cmd) {
                     ConfigServerRequest.GAME_MAP_CHECKSUM -> {
-
+                        if (!MapManager.checkMap(params.getInt(ConfigSFSPacketKey.MAP_CHECKSUM)))
+                            game.client.send(ExtensionRequest(ConfigClientRequest.GAME_MAP, SFSObject(), game.client.lastJoinedRoom))
+                        else
+                            MapManager.loadMap()
                     }
                     ConfigServerRequest.GAME_MAP -> {
+                        MapManager.saveMap(params)
+                        MapManager.loadMap()
+                        game.switchScreen(GameScreen(game))
                     }
                 }
             }

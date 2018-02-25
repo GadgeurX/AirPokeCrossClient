@@ -25,4 +25,14 @@ object ConfigSFSPacketKey {
 
     const val STARTER_INDEX = "starter_index"
     const val STARTER_NICKNAME = "starter_nickname"
+
+    const val MAP_CHECKSUM = "map_checksum"
+
+    const val MAP_WIDTH = "MAP_WIDTH"
+    const val MAP_HEIGHT = "MAP_HEIGHT"
+    const val MAP_TILES = "MAP_TILES"
+    const val MAP_TILESET = "MAP_TILESET"
+
+    const val MAP_GLOBAL_TILESET = "MAP_GLOBAL_TILESET"
+    const val MAP_LOCAL_TILESET = "MAP_LOCAL_TILESET"
 }

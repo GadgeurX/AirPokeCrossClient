@@ -10,4 +10,6 @@ object ConfigGame {
 
     const val SERVER_IP = "127.0.0.1"
     const val SERVER_PORT = 9933
+
+    const val MAP_DIRECTORY = "./maps/"
 }

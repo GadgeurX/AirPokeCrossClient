@@ -98,7 +98,7 @@ class SelectCharacterScreen(game: AirPokeCrossGame) : BaseScreen(game) {
                 }
             }
             SFSEvent.ROOM_JOIN -> {
-                game.switchScreen(GameScreen(game))
+                game.switchScreen(LoadingMapScreen(game))
             }
         }
     }
