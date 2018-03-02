@@ -4,7 +4,7 @@ import com.rcorp.airpokecross.AirPokeCrossGame
 import com.rcorp.airpokecross.config.ConfigClientRequest
 import com.rcorp.airpokecross.config.ConfigSFSPacketKey
 import com.rcorp.airpokecross.config.ConfigServerRequest
-import com.rcorp.airpokecross.managers.MapManager
+import com.rcorp.airpokecross.managers.MapLoader
 import com.smartfoxserver.v2.entities.data.ISFSObject
 import com.smartfoxserver.v2.entities.data.SFSObject
 import sfs2x.client.core.BaseEvent
@@ -27,14 +27,14 @@ class LoadingMapScreen(game: AirPokeCrossGame): BaseScreen(game) {
                 val params: ISFSObject = event.arguments[ConfigSFSPacketKey.SFS_EXTENSION_PARAMS] as ISFSObject
                 when(cmd) {
                     ConfigServerRequest.GAME_MAP_CHECKSUM -> {
-                        if (!MapManager.checkMap(params.getInt(ConfigSFSPacketKey.MAP_CHECKSUM)))
+                        if (!MapLoader.checkMap(params.getInt(ConfigSFSPacketKey.MAP_CHECKSUM)))
                             game.client.send(ExtensionRequest(ConfigClientRequest.GAME_MAP, SFSObject(), game.client.lastJoinedRoom))
                         else
-                            MapManager.loadMap()
+                            MapLoader.loadMap()
                     }
                     ConfigServerRequest.GAME_MAP -> {
-                        MapManager.saveMap(params)
-                        MapManager.loadMap()
+                        MapLoader.saveMap(params)
+                        MapLoader.loadMap()
                         game.switchScreen(GameScreen(game))
                     }
                 }

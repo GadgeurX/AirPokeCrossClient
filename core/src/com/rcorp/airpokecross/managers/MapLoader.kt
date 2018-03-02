@@ -5,14 +5,14 @@ import com.rcorp.airpokecross.config.ConfigSFSPacketKey
 import com.smartfoxserver.v2.entities.data.ISFSObject
 import java.io.File
 
-object MapManager {
+object MapLoader {
 
     var checksum : Int = 0
 
     var width = 0
     var height = 0
-    lateinit var tileArray: Array<Array<Int>>
-    lateinit var tilesetArray: Array<Array<Pair<Int, Int>>>
+    lateinit var tileMapArray: Array<Array<Int>>
+    lateinit var tilesetMapArray: Array<Array<Pair<Int, Int>>>
 
     fun checkMap(checksumParam: Int) : Boolean {
         checksum = checksumParam
@@ -25,7 +25,7 @@ object MapManager {
         while (x < width) {
             var y = 0
             while (y < height) {
-                tmpChecksum = (tmpChecksum + tileArray[x][y] + tilesetArray[x][y].first + tilesetArray[x][y].second) % 10000000
+                tmpChecksum = (tmpChecksum + tileMapArray[x][y] + tilesetMapArray[x][y].first + tilesetMapArray[x][y].second) % 10000000
                 y++
             }
             x++
@@ -41,16 +41,16 @@ object MapManager {
         val mapSize = bufferedReader.readLine().split(" ")
         width = mapSize[0].toInt()
         height = mapSize[1].toInt()
-        tileArray = Array(width, { _ -> Array(height, { _ -> -1 }) })
-        tilesetArray = Array(width, { _ -> Array(height, { _ -> Pair(-1, -1) }) })
+        tileMapArray = Array(width, { _ -> Array(height, { _ -> -1 }) })
+        tilesetMapArray = Array(width, { _ -> Array(height, { _ -> Pair(-1, -1) }) })
         bufferedReader.useLines { lines ->
             lines.forEach {
                 val blockLine = it.split(" ")
                 val x = blockLine[0].toInt()
                 val y = blockLine[1].toInt()
                 val tile = blockLine[2].toInt()
-                tileArray[x][y] = tile
-                tilesetArray[x][y] = Pair(blockLine[3].toInt(), blockLine[4].toInt())
+                tileMapArray[x][y] = tile
+                tilesetMapArray[x][y] = Pair(blockLine[3].toInt(), blockLine[4].toInt())
             }
         }
     }
